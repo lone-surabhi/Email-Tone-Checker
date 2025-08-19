@@ -39,7 +39,7 @@ exports.handler = async (event, context) => {
       throw new Error('GEMINI_API_KEY environment variable not set');
     }
     
-    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     console.log('Gemini URL prepared');
     
     const prompt = `Analyze the tone of this email and provide 3 improved versions. Respond ONLY with valid JSON in this exact format:
