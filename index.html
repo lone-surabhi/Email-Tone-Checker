@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Tone Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Email Tone Checker</h1>
+            <p>Improve your email communication with AI-powered tone analysis</p>
+        </header>
+
+        <main>
+            
+            <section class="input-section">
+                <h2>Your Email Draft</h2>
+                <textarea 
+                    id="emailInput" 
+                    placeholder="Type or paste your email here...&#10;&#10;Example: 'I need the report by tomorrow. This is urgent.'"
+                    rows="8"
+                >I need the report by tomorrow. This is urgent.</textarea>
+                <button onclick="analyzeEmail()">
+                    <span id="buttonText">Analyze Tone</span>
+                    <span id="spinner" class="spinner hidden">⟳</span>
+                </button>
+                <div id="messages"></div>
+            </section>
+
+           
+            <section id="results" class="results-section hidden">
+                <h2>Tone Analysis</h2>
+                <div id="analysis" class="analysis-card"></div>
+                
+                <h3>Suggested Improvements</h3>
+                <div id="suggestions" class="suggestions-grid"></div>
+            </section>
+
+            <section id="editSection" class="edit-section hidden">
+                <h2>Edit Your Email</h2>
+                <textarea id="editableEmail" rows="6" placeholder="Your selected version will appear here for editing..."></textarea>
+                <div class="edit-actions">
+                    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+                    <button onclick="startOver()" class="secondary">Start Over</button>
+                </div>
+                <div id="editMessages"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with AI for better communication • <a href="#" onclick="showInfo()">How it works</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

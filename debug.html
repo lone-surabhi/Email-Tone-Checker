@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Tone Checker - Debug Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            min-height: 120px;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .results {
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #ecf0f1;
+        }
+        
+        .suggestion {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        
+        .suggestion:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+        }
+        
+        .suggestion-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        .edit-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .success {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Tone Checker</h1>
+        
+        <div>
+            <h2>Step 1: Enter Your Email</h2>
+            <textarea id="emailInput" placeholder="Type or paste your email here...">I need the report by tomorrow. This is urgent.</textarea>
+            <br>
+            <button onclick="analyzeEmail()">
+                <span id="buttonText">Analyze Tone</span>
+                <span id="spinner" class="spinner hidden">⟳</span>
+            </button>
+        </div>
+        
+        <div id="results" class="results hidden">
+            <h2>Analysis Results</h2>
+            <div id="analysis"></div>
+            
+            <h3>Suggested Improvements:</h3>
+            <div id="suggestions"></div>
+        </div>
+        
+        <div id="editSection" class="edit-section hidden">
+            <h2>Edit Your Email</h2>
+            <textarea id="editableEmail" placeholder="Edit your selected version here..."></textarea>
+            <br>
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+            <button onclick="startOver()" style="background: #95a5a6;">Start Over</button>
+            <div id="messages"></div>
+        </div>
+    </div>
+
+    <script>
+        console.log("Script loaded successfully!");
+        
+        function analyzeEmail() {
+            console.log("Analyze button clicked!");
+            
+            // Get the email text
+            const emailText = document.getElementById('emailInput').value.trim();
+            console.log("Email text:", emailText);
+            
+            // Basic validation
+            if (!emailText) {
+                showMessage("Please enter some email text!", "error");
+                return;
+            }
+            
+            if (emailText.length < 5) {
+                showMessage("Please enter a longer email (at least 5 characters).", "error");
+                return;
+            }
+            
+            // Show loading state
+            setLoading(true);
+            console.log("Loading state activated");
+            
+            // Simulate AI processing with setTimeout
+            setTimeout(() => {
+                console.log("Simulating AI response...");
+                
+                // Create mock results
+                const mockResults = {
+                    analysis: "Current tone: Direct but potentially harsh - Your email could benefit from being more polite and professional.",
+                    suggestions: {
+                        professional: "I would appreciate if you could provide the report by tomorrow to meet our deadline. Thank you for your assistance.",
+                        friendly: "Hi! I hope you're doing well. Would it be possible to get the report by tomorrow? I'd really appreciate it. Thanks so much!",
+                        concise: "Please send the report by tomorrow. Thank you."
+                    }
+                };
+                
+                displayResults(mockResults);
+                setLoading(false);
+                console.log("Results displayed!");
+                
+            }, 2000); // 2 second delay to simulate API call
+        }
+        
+        function displayResults(results) {
+            console.log("Displaying results:", results);
+            
+            // Show analysis
+            document.getElementById('analysis').innerHTML = `
+                <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                    <strong>📝 ${results.analysis}</strong>
+                </div>
+            `;
+            
+            // Show suggestions
+            const suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = '';
+            
+            Object.keys(results.suggestions).forEach(type => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'suggestion';
+                suggestionDiv.onclick = () => selectSuggestion(results.suggestions[type]);
+                
+                suggestionDiv.innerHTML = `
+                    <div class="suggestion-title">📧 ${type.charAt(0).toUpperCase() + type.slice(1)} Version</div>
+                    <div>"${results.suggestions[type]}"</div>
+                `;
+                
+                suggestionsDiv.appendChild(suggestionDiv);
+            });
+            
+            // Show results section
+            document.getElementById('results').classList.remove('hidden');
+        }
+        
+        function selectSuggestion(text) {
+            console.log("Suggestion selected:", text);
+            
+            // Put text in edit area
+            document.getElementById('editableEmail').value = text;
+            
+            // Show edit section
+            document.getElementById('editSection').classList.remove('hidden');
+            
+            // Clear any previous messages
+            document.getElementById('messages').innerHTML = '';
+            
+            // Scroll to edit section
+            document.getElementById('editSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyToClipboard() {
+            const text = document.getElementById('editableEmail').value;
+            
+            if (!text.trim()) {
+                showMessage("No text to copy! Please select a suggestion first.", "error");
+                return;
+            }
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage("Email copied to clipboard!", "success");
+            }).catch(() => {
+                showMessage("Failed to copy. Please select and copy manually.", "error");
+            });
+        }
+        
+        function startOver() {
+            console.log("Starting over...");
+            
+            // Clear inputs
+            document.getElementById('emailInput').value = '';
+            document.getElementById('editableEmail').value = '';
+            
+            // Hide sections
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('editSection').classList.add('hidden');
+            
+            // Clear messages
+            document.getElementById('messages').innerHTML = '';
+            
+            // Focus on input
+            document.getElementById('emailInput').focus();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function setLoading(isLoading) {
+            const button = document.querySelector('button');
+            const buttonText = document.getElementById('buttonText');
+            const spinner = document.getElementById('spinner');
+            
+            if (isLoading) {
+                button.disabled = true;
+                buttonText.classList.add('hidden');
+                spinner.classList.remove('hidden');
+            } else {
+                button.disabled = false;
+                buttonText.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        }
+        
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
+            
+            // Auto-clear success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    messagesDiv.innerHTML = '';
+                }, 3000);
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Page loaded, Email Tone Checker ready!");
+            document.getElementById('emailInput').focus();
+        });
+    </script>
+</body>
+</html>

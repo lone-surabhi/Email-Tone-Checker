@@ -1,0 +1,6 @@
+{
+  "name": "email-tone-checker",
+  "version": "1.0.0",
+  "description": "AI-powered email tone analysis tool",
+  "main": "index.html"
+}
