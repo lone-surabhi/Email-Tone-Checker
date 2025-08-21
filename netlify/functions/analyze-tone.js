@@ -19,8 +19,7 @@ exports.handler = async (event, context) => {
 
   try {
     console.log('Processing POST request...');
-    
-    // Check if we have request body
+  
     if (!event.body) {
       console.error('No request body received');
       throw new Error('No request body');
@@ -30,7 +29,6 @@ exports.handler = async (event, context) => {
     console.log('Email received:', email ? 'Yes' : 'No');
     console.log('Email length:', email ? email.length : 0);
     
-    // Check API key
     const apiKey = process.env.GEMINI_API_KEY;
     console.log('API Key exists:', !!apiKey);
     console.log('API Key starts with AIza:', apiKey ? apiKey.startsWith('AIza') : false);
@@ -107,7 +105,6 @@ Remember: Return only valid JSON, no additional text or formatting.`;
       console.error('JSON parsing failed:', parseError.message);
       console.log('Raw generated text:', generatedText);
       
-      // Fallback response
       result = {
         analysis: "Unable to analyze tone - please try again",
         professional: `Dear [Recipient], ${email} Thank you for your consideration.`,

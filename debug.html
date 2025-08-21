@@ -168,11 +168,9 @@
         function analyzeEmail() {
             console.log("Analyze button clicked!");
             
-            // Get the email text
             const emailText = document.getElementById('emailInput').value.trim();
             console.log("Email text:", emailText);
             
-            // Basic validation
             if (!emailText) {
                 showMessage("Please enter some email text!", "error");
                 return;
@@ -183,15 +181,12 @@
                 return;
             }
             
-            // Show loading state
             setLoading(true);
             console.log("Loading state activated");
             
-            // Simulate AI processing with setTimeout
             setTimeout(() => {
                 console.log("Simulating AI response...");
                 
-                // Create mock results
                 const mockResults = {
                     analysis: "Current tone: Direct but potentially harsh - Your email could benefit from being more polite and professional.",
                     suggestions: {
@@ -205,20 +200,18 @@
                 setLoading(false);
                 console.log("Results displayed!");
                 
-            }, 2000); // 2 second delay to simulate API call
+            }, 2000);
         }
         
         function displayResults(results) {
             console.log("Displaying results:", results);
             
-            // Show analysis
             document.getElementById('analysis').innerHTML = `
                 <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
                     <strong>📝 ${results.analysis}</strong>
                 </div>
             `;
             
-            // Show suggestions
             const suggestionsDiv = document.getElementById('suggestions');
             suggestionsDiv.innerHTML = '';
             
@@ -235,23 +228,18 @@
                 suggestionsDiv.appendChild(suggestionDiv);
             });
             
-            // Show results section
             document.getElementById('results').classList.remove('hidden');
         }
         
         function selectSuggestion(text) {
             console.log("Suggestion selected:", text);
             
-            // Put text in edit area
             document.getElementById('editableEmail').value = text;
             
-            // Show edit section
             document.getElementById('editSection').classList.remove('hidden');
             
-            // Clear any previous messages
             document.getElementById('messages').innerHTML = '';
             
-            // Scroll to edit section
             document.getElementById('editSection').scrollIntoView({ behavior: 'smooth' });
         }
         
@@ -263,7 +251,6 @@
                 return;
             }
             
-            // Copy to clipboard
             navigator.clipboard.writeText(text).then(() => {
                 showMessage("Email copied to clipboard!", "success");
             }).catch(() => {
@@ -274,21 +261,16 @@
         function startOver() {
             console.log("Starting over...");
             
-            // Clear inputs
             document.getElementById('emailInput').value = '';
             document.getElementById('editableEmail').value = '';
             
-            // Hide sections
             document.getElementById('results').classList.add('hidden');
             document.getElementById('editSection').classList.add('hidden');
             
-            // Clear messages
             document.getElementById('messages').innerHTML = '';
             
-            // Focus on input
             document.getElementById('emailInput').focus();
             
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
@@ -312,7 +294,6 @@
             const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
             
-            // Auto-clear success messages
             if (type === 'success') {
                 setTimeout(() => {
                     messagesDiv.innerHTML = '';
@@ -320,7 +301,6 @@
             }
         }
         
-        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Page loaded, Email Tone Checker ready!");
             document.getElementById('emailInput').focus();

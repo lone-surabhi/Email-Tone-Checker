@@ -3,15 +3,12 @@ let analysisResults = null;
 
 console.log("Email Tone Checker script loaded successfully!");
 
-//Done
-
 async function analyzeEmail() {
     console.log("Analyze button clicked!");
     
     const emailText = document.getElementById('emailInput').value.trim();
     console.log("Email text:", emailText);
-    
-    // Validation
+
     if (!emailText) {
         showMessage("Please enter an email draft to analyze.", "error");
         return;
@@ -21,19 +18,15 @@ async function analyzeEmail() {
         showMessage("Please enter a longer email (at least 10 characters).", "error");
         return;
     }
-    
-    // Clear any previous messages
+
     clearMessages();
-    
-    // Update UI for loading state
+
     setLoadingState(true);
     console.log("Loading state activated");
     
-    // Store current email
     currentEmailText = emailText;
     
     try {
-        // Call Google's AI through our serverless function
         console.log("Calling Google's AI...");
         
         const response = await fetch('/.netlify/functions/analyze-tone', {
@@ -55,7 +48,6 @@ async function analyzeEmail() {
             throw new Error(results.error);
         }
         
-        // Put the results in the right format for our app
         const formattedResults = {
             analysis: results.analysis || "Analysis completed",
             suggestions: {
@@ -72,7 +64,6 @@ async function analyzeEmail() {
         console.error('AI analysis failed:', error);
         showMessage(`AI analysis failed: ${error.message}. Please try again.`, 'error');
         
-        // If Google's AI doesn't work, use backup fake results
         console.log("Using backup fake results...");
         const mockResults = generateMockAnalysis(emailText);
         displayResults(mockResults);
@@ -226,34 +217,26 @@ async function copyToClipboard() {
     }
 }
 
-// Start over function
 function startOver() {
     console.log("Starting over...");
     
-    // Clear all inputs
     document.getElementById('emailInput').value = '';
     document.getElementById('editableEmail').value = '';
     
-    // Hide sections
     document.getElementById('results').classList.add('hidden');
     document.getElementById('editSection').classList.add('hidden');
     
-    // Clear variables
     currentEmailText = '';
     analysisResults = null;
     
-    // Clear all messages
     clearMessages();
     document.getElementById('editMessages').innerHTML = '';
     
-    // Focus back on input
     document.getElementById('emailInput').focus();
     
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// UI Helper Functions
 function setLoadingState(isLoading) {
     const buttonText = document.getElementById('buttonText');
     const spinner = document.getElementById('spinner');
@@ -274,7 +257,6 @@ function showMessage(message, type) {
     const messagesDiv = document.getElementById('messages');
     messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
     
-    // Auto-clear success messages after 3 seconds
     if (type === 'success') {
         setTimeout(() => {
             messagesDiv.innerHTML = '';
@@ -286,7 +268,6 @@ function showEditMessage(message, type) {
     const messagesDiv = document.getElementById('editMessages');
     messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
     
-    // Auto-clear success messages after 3 seconds
     if (type === 'success') {
         setTimeout(() => {
             messagesDiv.innerHTML = '';
@@ -302,16 +283,12 @@ function showInfo() {
     alert('Email Tone Checker uses AI to analyze your email drafts and suggest improvements for better communication. Simply paste your email, click analyze, and choose from professional, friendly, or concise versions!');
 }
 
-// Initialize app when page loads
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Page loaded, Email Tone Checker ready!");
     
-    // Focus on email input
     document.getElementById('emailInput').focus();
     
-    // Add keyboard shortcuts
     document.getElementById('emailInput').addEventListener('keydown', function(e) {
-        // Ctrl+Enter or Cmd+Enter to analyze
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             analyzeEmail();
         }
